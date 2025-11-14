@@ -1,18 +1,20 @@
-import 'package:commet_chat/features/Authentication/pages/Authentication_screen.dart';
-import 'package:commet_chat/features/Authentication/pages/otp_screen.dart';
-import 'package:commet_chat/features/Authentication/pages/splash_screen.dart';
+import 'package:commet_chat/features/registration/pages/basic_details_screen.dart';
+import 'package:commet_chat/features/registration/pages/education_screen.dart';
+import 'package:commet_chat/features/registration/pages/prfile_photo_screen.dart';
+import 'package:commet_chat/features/registration/pages/select_profile_screen.dart';
 import 'package:go_router/go_router.dart';
 
-enum Routes { splashScreen, otpScreen, authenticationScreen }
+enum Routes { basicDetailsScreen, educationScreen, profilePhotoScreen, selectProfileScreen,splashScreen, otpScreen, authenticationScreen }
 
-final GoRouter goRouter = GoRouter(
+GoRouter goRouter = GoRouter(
+  initialLocation: '/',
   routes: [
-    GoRoute(
+     GoRoute(
       path: "/",
       name: Routes.splashScreen.name,
       builder: (context, state) => SplashScreen(),
     ),
-    GoRoute(
+     GoRoute(
       path: "/authenticationScrren",
       name: Routes.authenticationScreen.name,
       builder: (context, state) => AuthenticationScreen(),
@@ -21,6 +23,26 @@ final GoRouter goRouter = GoRouter(
       path: "/otpScreen",
       name: Routes.otpScreen.name,
       builder: (context, state) => OtpScreen(),
+    )
+    GoRoute(
+      path: '/educationScreen',
+      name: Routes.educationScreen.name,
+      builder: (context, state) => EducationScreen(),
     ),
-  ],
+    GoRoute(
+      path: '/profilePhotoScreen',
+      name: Routes.profilePhotoScreen.name,
+      builder: (context, state) => ProfilePhotoScreen(),
+    ),
+    GoRoute(
+      path: '/selectProfileScreen',
+      name: Routes.selectProfileScreen.name,
+      builder: (context, state) => SelectProfileScreen(),
+      ),
+
+   ]
+
+
+
+
 );
