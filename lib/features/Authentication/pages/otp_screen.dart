@@ -113,7 +113,9 @@ class OtpScreen extends StatelessWidget {
                 style: FilledButton.styleFrom(
                   backgroundColor: AppColors.primary,
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  goRouter.goNamed(Routes.basicDetailsScreen.name);
+                },
                 child: Text("Verify & Continue"),
               ),
             ),
@@ -121,6 +123,5 @@ class OtpScreen extends StatelessWidget {
         ),
       ),
     );
-    ;
   }
 }

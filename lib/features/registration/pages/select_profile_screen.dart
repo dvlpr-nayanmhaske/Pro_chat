@@ -156,7 +156,7 @@ class SelectProfileScreen extends StatelessWidget {
                           );
                           return;
                         }
-                        goRouter.goNamed(Routes.selectProfileScreen.name);
+                        goRouter.goNamed(Routes.conversationScreen.name);
                       },
                       style: ButtonStyle(
                         backgroundColor: WidgetStatePropertyAll(

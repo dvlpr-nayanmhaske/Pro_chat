@@ -186,33 +186,35 @@ class ConversationsScreen extends StatelessWidget {
                           child: Icon(Icons.person, color: Colors.black),
                         ),
                         12.widthBox,
-                        SizedBox(
-                          height: 55,
+                        Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                              SizedBox(
+                                width: double.infinity,
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
 
-                                children: [
-                                  Text(
-                                    "Aadesh",
-                                    style: TextStyle(
-                                      fontFamily: Fonts.medium,
-                                      fontSize: 18.sp,
+                                  children: [
+                                    Text(
+                                      "Aadesh",
+                                      style: TextStyle(
+                                        fontFamily: Fonts.medium,
+                                        fontSize: 18.sp,
+                                      ),
                                     ),
-                                  ),
-                                  165.widthBox,
-                                  Text(
-                                    "9:58",
-                                    style: TextStyle(
-                                      fontFamily: Fonts.regular,
-                                      fontSize: 18.sp,
-                                      color: Colors.black54,
+
+                                    Text(
+                                      "9:58",
+                                      style: TextStyle(
+                                        fontFamily: Fonts.regular,
+                                        fontSize: 18.sp,
+                                        color: Colors.black54,
+                                      ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                               Text(
                                 "hello",

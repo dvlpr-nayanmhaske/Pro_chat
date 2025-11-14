@@ -21,13 +21,16 @@ class CometChat extends StatelessWidget {
       designSize: Size(428, 926),
       builder: (context, child) {
         return MultiBlocProvider(
-          providers: [BlocProvider(create: (_) => ConversationsBloc()),BlocProvider(create: (_) => RegistrationBloc())],
+          providers: [
+            BlocProvider(create: (_) => ConversationsBloc()),
+            BlocProvider(create: (_) => RegistrationBloc()),
+          ],
           child: MaterialApp.router(
             routerConfig: goRouter,
             debugShowCheckedModeBanner: false,
           ),
         );
       },
- 
+    );
   }
 }

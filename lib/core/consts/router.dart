@@ -1,20 +1,42 @@
+import 'package:commet_chat/features/Authentication/pages/Authentication_screen.dart';
+import 'package:commet_chat/features/Authentication/pages/otp_screen.dart';
+import 'package:commet_chat/features/Authentication/pages/landing_screen.dart';
+import 'package:commet_chat/features/Authentication/pages/splash_screen.dart';
+import 'package:commet_chat/features/chat/pages/chat_screen.dart';
+import 'package:commet_chat/features/conversations/pages/conversations_screen.dart';
 import 'package:commet_chat/features/registration/pages/basic_details_screen.dart';
 import 'package:commet_chat/features/registration/pages/education_screen.dart';
 import 'package:commet_chat/features/registration/pages/prfile_photo_screen.dart';
 import 'package:commet_chat/features/registration/pages/select_profile_screen.dart';
 import 'package:go_router/go_router.dart';
 
-enum Routes { basicDetailsScreen, educationScreen, profilePhotoScreen, selectProfileScreen,splashScreen, otpScreen, authenticationScreen,conversationScreen, chatScreen }
+enum Routes {
+  basicDetailsScreen,
+  educationScreen,
+  profilePhotoScreen,
+  selectProfileScreen,
+  splashScreen,
+  landingScreen,
+  otpScreen,
+  authenticationScreen,
+  conversationScreen,
+  chatScreen,
+}
 
 GoRouter goRouter = GoRouter(
   initialLocation: '/',
   routes: [
-     GoRoute(
+    GoRoute(
       path: "/",
       name: Routes.splashScreen.name,
       builder: (context, state) => SplashScreen(),
     ),
-     GoRoute(
+    GoRoute(
+      path: "/landingScreen",
+      name: Routes.landingScreen.name,
+      builder: (context, state) => LandingScreen(),
+    ),
+    GoRoute(
       path: "/authenticationScrren",
       name: Routes.authenticationScreen.name,
       builder: (context, state) => AuthenticationScreen(),
@@ -23,7 +45,13 @@ GoRouter goRouter = GoRouter(
       path: "/otpScreen",
       name: Routes.otpScreen.name,
       builder: (context, state) => OtpScreen(),
-    )
+    ),
+    GoRoute(
+      path: "/basicDetailsScreen",
+      name: Routes.basicDetailsScreen.name,
+      builder: (context, state) => BasicDetailsScreen(),
+    ),
+
     GoRoute(
       path: '/educationScreen',
       name: Routes.educationScreen.name,
@@ -38,8 +66,8 @@ GoRouter goRouter = GoRouter(
       path: '/selectProfileScreen',
       name: Routes.selectProfileScreen.name,
       builder: (context, state) => SelectProfileScreen(),
-      ),
-      GoRoute(
+    ),
+    GoRoute(
       path: "/conversation",
       name: Routes.conversationScreen.name,
       builder: (context, state) => ConversationsScreen(),
@@ -49,10 +77,5 @@ GoRouter goRouter = GoRouter(
       name: Routes.chatScreen.name,
       builder: (context, state) => ChatScreen(),
     ),
-
-   ]
-
-
-
-
+  ],
 );
