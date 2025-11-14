@@ -4,16 +4,26 @@ import 'package:commet_chat/features/registration/pages/prfile_photo_screen.dart
 import 'package:commet_chat/features/registration/pages/select_profile_screen.dart';
 import 'package:go_router/go_router.dart';
 
-enum Routes { basicDetailsScreen, educationScreen, profilePhotoScreen, selectProfileScreen }
+enum Routes { basicDetailsScreen, educationScreen, profilePhotoScreen, selectProfileScreen,splashScreen, otpScreen, authenticationScreen }
 
 GoRouter goRouter = GoRouter(
   initialLocation: '/',
   routes: [
-    GoRoute(
-      path: '/',
-      name: Routes.basicDetailsScreen.name,
-      builder: (context, state) => BasicDetailsScreen(),
+     GoRoute(
+      path: "/",
+      name: Routes.splashScreen.name,
+      builder: (context, state) => SplashScreen(),
     ),
+     GoRoute(
+      path: "/authenticationScrren",
+      name: Routes.authenticationScreen.name,
+      builder: (context, state) => AuthenticationScreen(),
+    ),
+    GoRoute(
+      path: "/otpScreen",
+      name: Routes.otpScreen.name,
+      builder: (context, state) => OtpScreen(),
+    )
     GoRoute(
       path: '/educationScreen',
       name: Routes.educationScreen.name,
@@ -28,6 +38,11 @@ GoRouter goRouter = GoRouter(
       path: '/selectProfileScreen',
       name: Routes.selectProfileScreen.name,
       builder: (context, state) => SelectProfileScreen(),
-    ),
-  ],
+      ),
+
+   ]
+
+
+
+
 );
