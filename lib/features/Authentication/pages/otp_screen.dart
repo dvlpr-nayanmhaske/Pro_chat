@@ -2,7 +2,10 @@ import 'package:commet_chat/core/consts/colours.dart';
 import 'package:commet_chat/core/consts/extension.dart';
 import 'package:commet_chat/core/consts/fonts.dart';
 import 'package:commet_chat/core/consts/router.dart';
+import 'package:commet_chat/core/services/locator.dart';
+import 'package:commet_chat/features/Authentication/bloc/Authentication_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pinput/pinput.dart';
 
@@ -114,9 +117,25 @@ class OtpScreen extends StatelessWidget {
                   backgroundColor: AppColors.primary,
                 ),
                 onPressed: () {
-                  goRouter.goNamed(Routes.basicDetailsScreen.name);
+                  locator<AuthenticationBloc>().add(
+                    ValidateOtpEvent(otp: pinField.text),
+                  );
                 },
-                child: Text("Verify & Continue"),
+                child: BlocConsumer<AuthenticationBloc, AuthenticationState>(
+                  listener: (context, state) {
+                    if (state is SendOtpEventSuccessState) {
+                      goRouter.goNamed(Routes.basicDetailsScreen.name);
+                    }
+                    if (state is SendOtpEventErrorState) {
+                      print(state.error);
+                    }
+                  },
+                  builder: (context, state) {
+                    return state is SendOtpEventLoadingState
+                        ? CircularProgressIndicator()
+                        : Text("Verify & Continue");
+                  },
+                ),
               ),
             ),
           ],

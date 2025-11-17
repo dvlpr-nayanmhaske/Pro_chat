@@ -1,22 +1,31 @@
-import 'package:commet_chat/core/consts/router.dart';
 import 'package:commet_chat/core/consts/urls.dart';
+import 'package:commet_chat/core/services/locator.dart';
+import 'package:commet_chat/features/Authentication/bloc/Authentication_bloc.dart';
 import 'package:flutter/material.dart';
+
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class SplashScreen extends StatelessWidget {
+class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
-  void changeScreen() {
-    Future.delayed(
-      const Duration(seconds: 2),
-      () => goRouter.goNamed(Routes.landingScreen.name),
-    );
+  @override
+  State<SplashScreen> createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> {
+  late final AuthenticationBloc bloc;
+  @override
+  void initState() {
+    super.initState();
+    bloc = locator<AuthenticationBloc>();
+
+    Future.delayed(Duration(seconds: 2), () {
+      bloc.add(AppHandelEvent());
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    changeScreen();
-
     return Scaffold(
       backgroundColor: Colors.white,
       body: Center(

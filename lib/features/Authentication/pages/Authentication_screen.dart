@@ -2,7 +2,10 @@ import 'package:commet_chat/core/consts/colours.dart';
 import 'package:commet_chat/core/consts/extension.dart';
 import 'package:commet_chat/core/consts/fonts.dart';
 import 'package:commet_chat/core/consts/router.dart';
+import 'package:commet_chat/core/services/locator.dart';
+import 'package:commet_chat/features/Authentication/bloc/Authentication_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AuthenticationScreen extends StatelessWidget {
@@ -74,7 +77,7 @@ class AuthenticationScreen extends StatelessWidget {
                         prefixIconConstraints: BoxConstraints(
                           minWidth: 0,
                           minHeight: 0,
-                        ), // keeps it compact
+                        ),
                         hintText: "Enter your Mobile Number",
                         hintStyle: TextStyle(color: Colors.grey, fontSize: 14),
                         enabledBorder: OutlineInputBorder(
@@ -105,9 +108,30 @@ class AuthenticationScreen extends StatelessWidget {
                           backgroundColor: AppColors.primary,
                         ),
                         onPressed: () {
-                          goRouter.pushNamed(Routes.otpScreen.name);
+                          locator<AuthenticationBloc>().add(
+                            SendOtpEvent(phoneNo: numberField.text),
+                          );
                         },
-                        child: Text("Continue"),
+                        child:
+                            BlocConsumer<
+                              AuthenticationBloc,
+                              AuthenticationState
+                            >(
+                              listener: (context, state) {
+                                if (state is SendOtpEventSuccessState) {
+                                  goRouter.goNamed(Routes.otpScreen.name);
+                                }
+
+                                if (state is SendOtpEventErrorState) {
+                                  // HANDLE ERROR
+                                }
+                              },
+                              builder: (context, state) {
+                                return state is SendOtpEventLoadingState
+                                    ? Center(child: CircularProgressIndicator())
+                                    : Text("Continue");
+                              },
+                            ),
                       ),
                     ),
                   ],
