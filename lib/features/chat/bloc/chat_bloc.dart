@@ -1,6 +1,5 @@
 import 'package:bloc/bloc.dart';
 import 'package:commet_chat/core/services/locator.dart';
-import 'package:commet_chat/core/services/logger.dart';
 import 'package:commet_chat/core/services/socket_service.dart';
 import 'package:commet_chat/features/chat/models/message.dart';
 import 'package:commet_chat/features/chat/models/user_details.dart';
@@ -71,6 +70,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       "conversation_${event.conversationId}",
       (data) {
         final Message message = Message.fromJson(data);
+        repository.markAsSeen(conversationId);
         add(AddNewMessageEvent(message));
       },
     );
@@ -92,6 +92,9 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
 
   _stopListenToNewMessages(StopListenToNewMessages event, emit) {
     locator<SocketService>().stopListening("conversation_$conversationId");
+    locator<SocketService>().stopListening(
+      "conversation_updates_$conversationId",
+    );
   }
 
   _addNewMessageEvent(AddNewMessageEvent event, emit) {

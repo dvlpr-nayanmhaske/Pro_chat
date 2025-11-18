@@ -4,7 +4,7 @@ import 'package:socket_io_client/socket_io_client.dart' as IO;
 class SocketService {
   late IO.Socket socket;
 
-  final String host = "http://localhost:3000";
+  final String host = "http://192.168.1.6:3000";
 
   void connect() {
     socket = IO.io(

@@ -208,13 +208,15 @@ class MessageTile extends StatelessWidget {
                     style: TextStyle(color: Colors.white, fontSize: 10.sp),
                   ),
                   10.widthBox,
-                  Icon(
-                    Icons.check,
-                    size: 16,
-                    color: message.status == "seen"
-                        ? Colors.blue
-                        : Colors.white,
-                  ),
+                  message.sender == User().userId
+                      ? Icon(
+                          Icons.check,
+                          size: 16,
+                          color: message.status == "seen"
+                              ? Colors.blue
+                              : Colors.white,
+                        )
+                      : SizedBox.shrink(),
                 ],
               ),
             ],
