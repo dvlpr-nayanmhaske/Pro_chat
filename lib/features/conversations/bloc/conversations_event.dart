@@ -15,3 +15,19 @@ class SelectedTabEvent extends ConversationsEvent {
   @override
   List<Object> get props => [index];
 }
+
+class GetConversationEvent extends ConversationsEvent {}
+
+class StartListeningToConversations extends ConversationsEvent {}
+
+class StopListeningToConversations extends ConversationsEvent {}
+
+class AddNewConversationEvent extends ConversationsEvent {
+  final Conversation conversation;
+
+  AddNewConversationEvent({required this.conversation});
+
+  @override
+  // TODO: implement props
+  List<Object> get props => [conversation];
+}

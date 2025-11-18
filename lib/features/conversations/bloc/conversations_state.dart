@@ -17,3 +17,21 @@ class SelectedTabState extends ConversationsState {
   // TODO: implement props
   List<Object> get props => [selectedTab];
 }
+
+class GetConversationEventStates extends ConversationsState {}
+
+class GetConversationEventLoadingState extends GetConversationEventStates {}
+
+class GetConversationEventSuccessState extends GetConversationEventStates {
+  final DateTime _dateTime = DateTime.now();
+  @override
+  List<Object> get props => [_dateTime];
+}
+
+class GetConversationEventErrorState extends GetConversationEventStates {
+  final String error;
+  final DateTime _dateTime = DateTime.now();
+  GetConversationEventErrorState({required this.error});
+  @override
+  List<Object> get props => [error, _dateTime];
+}

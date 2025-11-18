@@ -29,3 +29,15 @@ class ValidateOtpEvent extends AuthenticationEvent {
   // TODO: implement props
   List<Object> get props => [otp];
 }
+
+class NavigateUserEvent extends AuthenticationEvent {}
+
+class UpdateAuthStatus extends AuthenticationEvent {
+  final AuthStatus status;
+
+  const UpdateAuthStatus({required this.status});
+
+  @override
+  // TODO: implement props
+  List<Object> get props => [status];
+}

@@ -80,7 +80,9 @@ class ApiClient {
           handler.next(options);
         },
         onResponse: (response, handler) {
-          logger.d("RECEIVED RESPONSE : ${response.data}");
+          logger.d("RECEIVED RESPONSE : ");
+          logger.d(response.data);
+
           handler.next(response);
         },
       ),

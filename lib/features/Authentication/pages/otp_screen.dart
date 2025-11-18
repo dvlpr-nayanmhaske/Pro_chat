@@ -9,10 +9,24 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pinput/pinput.dart';
 
-class OtpScreen extends StatelessWidget {
+class OtpScreen extends StatefulWidget {
   OtpScreen({super.key});
 
+  @override
+  State<OtpScreen> createState() => _OtpScreenState();
+}
+
+class _OtpScreenState extends State<OtpScreen> {
   TextEditingController pinField = TextEditingController();
+
+  late final AuthenticationBloc bloc;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    bloc = context.read<AuthenticationBloc>();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +57,7 @@ class OtpScreen extends StatelessWidget {
               ),
             ),
             Text(
-              "We've sent a 4 digit OTP to +91 93705 18036",
+              "We've sent a 4 digit OTP to +91 ${bloc.phoneNo}",
               style: TextStyle(
                 fontSize: 16.sp,
                 fontFamily: Fonts.regular,
@@ -123,15 +137,15 @@ class OtpScreen extends StatelessWidget {
                 },
                 child: BlocConsumer<AuthenticationBloc, AuthenticationState>(
                   listener: (context, state) {
-                    if (state is SendOtpEventSuccessState) {
+                    if (state is ValidateOtpEventSuccessState) {
                       goRouter.goNamed(Routes.basicDetailsScreen.name);
                     }
-                    if (state is SendOtpEventErrorState) {
+                    if (state is ValidateOtpEventErrorState) {
                       print(state.error);
                     }
                   },
                   builder: (context, state) {
-                    return state is SendOtpEventLoadingState
+                    return state is ValidateOtpEventLoadingState
                         ? CircularProgressIndicator()
                         : Text("Verify & Continue");
                   },

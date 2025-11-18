@@ -1,13 +1,19 @@
+import 'package:commet_chat/core/services/api_client.dart';
+import 'package:commet_chat/core/services/locator.dart';
 import 'package:commet_chat/features/Authentication/pages/Authentication_screen.dart';
 import 'package:commet_chat/features/Authentication/pages/otp_screen.dart';
 import 'package:commet_chat/features/Authentication/pages/landing_screen.dart';
 import 'package:commet_chat/features/Authentication/pages/splash_screen.dart';
+import 'package:commet_chat/features/Authentication/pages/verification_screen.dart';
+import 'package:commet_chat/features/chat/bloc/chat_bloc.dart';
 import 'package:commet_chat/features/chat/pages/chat_screen.dart';
+import 'package:commet_chat/features/chat/repository/chat_repository.dart';
 import 'package:commet_chat/features/conversations/pages/conversations_screen.dart';
 import 'package:commet_chat/features/registration/pages/basic_details_screen.dart';
 import 'package:commet_chat/features/registration/pages/education_screen.dart';
 import 'package:commet_chat/features/registration/pages/prfile_photo_screen.dart';
 import 'package:commet_chat/features/registration/pages/select_profile_screen.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 enum Routes {
@@ -21,6 +27,7 @@ enum Routes {
   authenticationScreen,
   conversationScreen,
   chatScreen,
+  verificationScreen,
 }
 
 GoRouter goRouter = GoRouter(
@@ -45,6 +52,11 @@ GoRouter goRouter = GoRouter(
       path: "/otpScreen",
       name: Routes.otpScreen.name,
       builder: (context, state) => OtpScreen(),
+    ),
+    GoRoute(
+      path: "/verificationScreen",
+      name: Routes.verificationScreen.name,
+      builder: (context, state) => VerificationScreen(),
     ),
     GoRoute(
       path: "/basicDetailsScreen",
@@ -73,9 +85,13 @@ GoRouter goRouter = GoRouter(
       builder: (context, state) => ConversationsScreen(),
     ),
     GoRoute(
-      path: "/chat",
+      path: "/chat/:id",
       name: Routes.chatScreen.name,
-      builder: (context, state) => ChatScreen(),
+      builder: (context, state) => BlocProvider(
+        create: (context) =>
+            ChatBloc(ChatRepository(apiClient: locator<ApiClient>())),
+        child: ChatScreen(conversationId: state.pathParameters['id'] as String),
+      ),
     ),
   ],
 );

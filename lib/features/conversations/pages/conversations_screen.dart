@@ -2,16 +2,40 @@ import 'package:commet_chat/core/consts/colours.dart';
 import 'package:commet_chat/core/consts/extension.dart';
 import 'package:commet_chat/core/consts/fonts.dart';
 import 'package:commet_chat/core/consts/router.dart';
+import 'package:commet_chat/core/services/locator.dart';
+import 'package:commet_chat/core/services/socket_service.dart';
 import 'package:commet_chat/features/conversations/bloc/conversations_bloc.dart';
+import 'package:commet_chat/features/conversations/models/conversation.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class ConversationsScreen extends StatelessWidget {
+class ConversationsScreen extends StatefulWidget {
   ConversationsScreen({super.key});
 
+  @override
+  State<ConversationsScreen> createState() => _ConversationsScreenState();
+}
+
+class _ConversationsScreenState extends State<ConversationsScreen> {
   List optionals = ["All", "Unread", "Imporatant"];
+
+  final ConversationsBloc bloc = locator<ConversationsBloc>();
+
+  @override
+  initState() {
+    super.initState();
+    locator<SocketService>().connect();
+    bloc.add(GetConversationEvent());
+    bloc.add(StartListeningToConversations());
+  }
+
+  @override
+  dispose() {
+    super.dispose();
+    bloc.add(StopListeningToConversations());
+  }
 
   showBottomSheet(contex) {
     showModalBottomSheet(
@@ -172,69 +196,99 @@ class ConversationsScreen extends StatelessWidget {
                 onTap: () {
                   goRouter.pushNamed(Routes.chatScreen.name);
                 },
-                child: ListView.builder(
-                  physics: NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  itemCount: 15,
-                  itemBuilder: (context, index) => Container(
-                    margin: EdgeInsets.only(bottom: 16.h),
+                child: BlocBuilder<ConversationsBloc, ConversationsState>(
+                  buildWhen: (previous, current) =>
+                      current is GetConversationEventStates,
+                  builder: (context, state) {
+                    if (state is GetConversationEventLoadingState) {
+                      return Center(child: CircularProgressIndicator());
+                    }
+
+                    return ListView.builder(
+                      physics: NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: bloc.conversations.length,
+                      itemBuilder: (context, index) => ConversationTile(
+                        conversation: bloc.conversations[index],
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class ConversationTile extends StatelessWidget {
+  ConversationTile({super.key, required this.conversation});
+
+  Conversation conversation;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () {
+        goRouter.pushNamed(
+          Routes.chatScreen.name,
+          pathParameters: {"id": conversation.id ?? "NA"},
+        );
+      },
+      child: Container(
+        margin: EdgeInsets.only(bottom: 16.h),
+        child: Row(
+          children: [
+            CircleAvatar(
+              backgroundColor: Colors.black12,
+              radius: 38.r,
+              child: Icon(Icons.person, color: Colors.black),
+            ),
+            12.widthBox,
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    width: double.infinity,
                     child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
                       children: [
-                        CircleAvatar(
-                          backgroundColor: Colors.black12,
-                          radius: 38.r,
-                          child: Icon(Icons.person, color: Colors.black),
+                        Text(
+                          conversation.name ?? "NA",
+                          style: TextStyle(
+                            fontFamily: Fonts.medium,
+                            fontSize: 18.sp,
+                          ),
                         ),
-                        12.widthBox,
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SizedBox(
-                                width: double.infinity,
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
 
-                                  children: [
-                                    Text(
-                                      "Aadesh",
-                                      style: TextStyle(
-                                        fontFamily: Fonts.medium,
-                                        fontSize: 18.sp,
-                                      ),
-                                    ),
-
-                                    Text(
-                                      "9:58",
-                                      style: TextStyle(
-                                        fontFamily: Fonts.regular,
-                                        fontSize: 18.sp,
-                                        color: Colors.black54,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Text(
-                                "hello",
-                                style: TextStyle(
-                                  fontFamily: Fonts.regular,
-                                  fontSize: 18.sp,
-                                  color: Colors.black54,
-                                ),
-                              ),
-                              SizedBox(width: 280.h, child: Divider()),
-                            ],
+                        Text(
+                          "9:58",
+                          style: TextStyle(
+                            fontFamily: Fonts.regular,
+                            fontSize: 18.sp,
+                            color: Colors.black54,
                           ),
                         ),
                       ],
                     ),
                   ),
-                ),
+                  Text(
+                    conversation.lastMessage?.text ?? "NA",
+                    style: TextStyle(
+                      fontFamily: Fonts.regular,
+                      fontSize: 18.sp,
+                      color: Colors.black54,
+                    ),
+                  ),
+                  SizedBox(width: 280.h, child: Divider()),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

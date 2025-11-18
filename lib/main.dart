@@ -1,6 +1,10 @@
 import 'package:commet_chat/core/consts/router.dart';
 import 'package:commet_chat/core/services/api_client.dart';
+
 import 'package:commet_chat/core/services/locator.dart';
+
+import 'package:commet_chat/core/services/socket_service.dart';
+import 'package:commet_chat/core/services/user.dart';
 import 'package:commet_chat/features/Authentication/bloc/Authentication_bloc.dart';
 import 'package:commet_chat/features/conversations/bloc/conversations_bloc.dart';
 
@@ -8,9 +12,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:commet_chat/features/registration/bloc/registration_bloc.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
-void main() {
+SocketService socket = SocketService();
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
   setupLocator();
+
+  await Hive.initFlutter();
+  User().init();
+
   runApp(CometChat());
 }
 
